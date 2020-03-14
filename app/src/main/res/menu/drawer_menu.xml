@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <item android:title="General">
+    <item android:title="Social">
 
        <menu>
 
@@ -10,25 +10,33 @@
                android:icon="@drawable/ic_home_black_24dp"
                android:title="Home" />
            <item
-               android:id="@+id/group"
+               android:id="@+id/account"
+               android:icon="@drawable/ic_person_black_24dp"
+               android:title="Account" />
+           <item
+               android:id="@+id/groups"
                android:icon="@drawable/ic_group_black_24dp"
                android:title="Groups" />
+           <item
+               android:id="@+id/notifications"
+               android:icon="@drawable/ic_notifications_black_24dp"
+               android:title="Notifications" />
 
        </menu>
 
     </item>
 
-    <item android:title="Communication">
+    <item android:title="Other">
 
         <menu>
 
             <item
-                android:id="@+id/share"
-                android:icon="@drawable/ic_share_black_24dp"
-                android:title="Share" />
+                android:id="@+id/settings"
+                android:icon="@drawable/ic_settings_black_24dp"
+                android:title="Settings" />
             <item
                 android:id="@+id/logout"
-                android:icon="@drawable/ic_send_black_24dp"
+                android:icon="@drawable/ic_exit_to_app_black_24dp"
                 android:title="Log Out" />
 
         </menu>
