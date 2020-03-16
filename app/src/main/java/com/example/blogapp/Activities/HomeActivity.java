@@ -22,6 +22,14 @@ import com.bumptech.glide.request.RequestOptions;
 import com.example.blogapp.Fragments.MainFragment;
 import com.example.blogapp.Fragments.ProfileFragment;
 import com.example.blogapp.R;
+import com.facebook.FacebookSdk;
+import com.facebook.login.LoginManager;
+import com.google.android.gms.auth.api.Auth;
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -39,6 +47,11 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     FirebaseAuth mAuth;
     FirebaseUser currentUser;
 
+    Boolean googleLogout = false;
+
+
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -46,6 +59,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
 
         mAuth = FirebaseAuth.getInstance();
         currentUser = mAuth.getCurrentUser();
+
 
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -65,8 +79,11 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         TextView navUserMail = headerView.findViewById(R.id.nav_user_mail);
         ImageView navUserPhoto = headerView.findViewById(R.id.nav_user_photo);
 
-        navUserMail.setText(currentUser.getEmail());
-        navUsername.setText(currentUser.getDisplayName());
+        if(currentUser.getEmail() != null && currentUser.getDisplayName() != null){
+
+            navUserMail.setText(currentUser.getEmail());
+            navUsername.setText(currentUser.getDisplayName());
+        }
 
         if(currentUser.getPhotoUrl() != null){
 
@@ -83,9 +100,21 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     }
 
     @Override
+    protected void onStart() {
+        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestEmail()
+                .build();
+
+        FacebookSdk.sdkInitialize(getApplicationContext());
+
+        super.onStart();
+    }
+
+    @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
 
         drawerLayout.closeDrawer(GravityCompat.START);
+        
 
 
         if(menuItem.getItemId() == R.id.home){
@@ -125,8 +154,19 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
 
         if(menuItem.getItemId() == R.id.logout){
 
+            GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
+
+            if(account != null){
+
+                googleLogout = true;
+            }
+
+            LoginManager.getInstance().logOut();
+
+
             FirebaseAuth.getInstance().signOut();
             Intent loginActivity = new Intent(getApplicationContext(), LoginActivity.class);
+            loginActivity.putExtra("googleLogout", googleLogout);
             startActivity(loginActivity);
             finish();
         }
