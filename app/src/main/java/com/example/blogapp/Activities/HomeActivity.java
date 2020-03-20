@@ -6,7 +6,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
-import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
@@ -21,18 +20,17 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.example.blogapp.Fragments.MainFragment;
 import com.example.blogapp.Fragments.ProfileFragment;
+
 import com.example.blogapp.R;
 import com.facebook.FacebookSdk;
 import com.facebook.login.LoginManager;
-import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
-import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
-import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+
 
 public class HomeActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -48,8 +46,6 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     FirebaseUser currentUser;
 
     Boolean googleLogout = false;
-
-
 
 
     @Override
@@ -91,13 +87,12 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         }else
             Glide.with(this).load(R.drawable.userphoto).into(navUserPhoto);
 
-
-
         fragmentManager = getSupportFragmentManager();
         fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.add(R.id.container_fragment, new MainFragment());
+        fragmentTransaction.replace(R.id.container_fragment, new MainFragment());
         fragmentTransaction.commit();
     }
+
 
     @Override
     protected void onStart() {
@@ -114,8 +109,6 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
 
         drawerLayout.closeDrawer(GravityCompat.START);
-        
-
 
         if(menuItem.getItemId() == R.id.home){
 
@@ -163,14 +156,12 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
 
             LoginManager.getInstance().logOut();
 
-
             FirebaseAuth.getInstance().signOut();
             Intent loginActivity = new Intent(getApplicationContext(), LoginActivity.class);
             loginActivity.putExtra("googleLogout", googleLogout);
             startActivity(loginActivity);
             finish();
         }
-
         return true;
     }
 }
