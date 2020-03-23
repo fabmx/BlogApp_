@@ -7,10 +7,7 @@
     tools:context=".Activities.HomeActivity"
     android:id="@+id/drawer">
 
-    <include
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        layout="@layout/drawer_toolbar"/>
+    
 
     <include
         android:layout_width="match_parent"

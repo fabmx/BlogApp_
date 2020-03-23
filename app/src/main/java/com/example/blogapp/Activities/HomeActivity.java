@@ -4,12 +4,14 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.content.ContextCompat;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import android.content.Intent;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
@@ -21,6 +23,7 @@ import com.bumptech.glide.request.RequestOptions;
 import com.example.blogapp.Fragments.MainFragment;
 import com.example.blogapp.Fragments.ProfileFragment;
 
+import com.example.blogapp.Fragments.SettingsFragment;
 import com.example.blogapp.R;
 import com.facebook.FacebookSdk;
 import com.facebook.login.LoginManager;
@@ -30,6 +33,8 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 
 public class HomeActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
@@ -45,6 +50,9 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     FirebaseAuth mAuth;
     FirebaseUser currentUser;
 
+    //FirebaseDatabase mDatabase;
+    //DatabaseReference myRef;
+
     Boolean googleLogout = false;
 
 
@@ -56,6 +64,10 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         mAuth = FirebaseAuth.getInstance();
         currentUser = mAuth.getCurrentUser();
 
+        //mDatabase = FirebaseDatabase.getInstance();
+        //myRef = mDatabase.getReference("Users");
+
+        //myRef.setValue(mAuth.getCurrentUser().getEmail());
 
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -87,10 +99,13 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         }else
             Glide.with(this).load(R.drawable.userphoto).into(navUserPhoto);
 
-        fragmentManager = getSupportFragmentManager();
-        fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.replace(R.id.container_fragment, new MainFragment());
-        fragmentTransaction.commit();
+        if(savedInstanceState == null){
+
+            fragmentManager = getSupportFragmentManager();
+            fragmentTransaction = fragmentManager.beginTransaction();
+            fragmentTransaction.replace(R.id.container_fragment, new MainFragment());
+            fragmentTransaction.commit();
+        }
     }
 
 
@@ -142,7 +157,13 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
 
         if(menuItem.getItemId() == R.id.settings){
 
+            getSupportActionBar().setTitle("Settings");
+            //getSupportActionBar().setBackgroundDrawable(new ColorDrawable(ContextCompat.getColor(this, R.color.colorPrimary)));
 
+            fragmentManager = getSupportFragmentManager();
+            fragmentTransaction = fragmentManager.beginTransaction();
+            fragmentTransaction.replace(R.id.container_fragment, new SettingsFragment());
+            fragmentTransaction.commit();
         }
 
         if(menuItem.getItemId() == R.id.logout){

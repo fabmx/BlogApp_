@@ -42,17 +42,13 @@ public class MainFragment extends Fragment {
 
     private OnFragmentInteractionListener mListener;
 
-
     RecyclerView rvCourts;
     CourtAdapter courtAdapter;
     List<Court> mData;
 
-
-
     public MainFragment() {
         // Required empty public constructor
     }
-
     /**
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
@@ -113,6 +109,7 @@ public class MainFragment extends Fragment {
 
     @Override
     public void onAttach(Context context) {
+
         super.onAttach(context);
     }
 

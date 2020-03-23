@@ -13,6 +13,7 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import com.example.blogapp.Models.User;
 import com.example.blogapp.R;
 import com.facebook.AccessToken;
 import com.facebook.AccessTokenTracker;
@@ -38,6 +39,8 @@ import com.google.firebase.auth.GoogleAuthProvider;
 
 import com.facebook.FacebookSdk;
 import com.facebook.appevents.AppEventsLogger;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 
 public class LoginActivity extends AppCompatActivity {
@@ -46,6 +49,9 @@ public class LoginActivity extends AppCompatActivity {
     private Button btnLogin, regBtn;
     private ProgressBar loginProgress;
     private FirebaseAuth mAuth;
+    private FirebaseUser user;
+    private FirebaseDatabase mDatabase;
+    private DatabaseReference myRef;
     private Intent HomeActivity;
     private ImageView logPhoto;
     private SignInButton googleSignIn;
@@ -69,6 +75,8 @@ public class LoginActivity extends AppCompatActivity {
         regBtn = findViewById(R.id.registerBtn);
         loginProgress = findViewById(R.id.loginProgress);
         mAuth = FirebaseAuth.getInstance();
+        mDatabase = FirebaseDatabase.getInstance();
+        myRef = mDatabase.getReference();
         HomeActivity = new Intent(this, com.example.blogapp.Activities.HomeActivity.class);
 
         logPhoto = findViewById(R.id.loginPhoto);
@@ -165,7 +173,7 @@ public class LoginActivity extends AppCompatActivity {
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
 
                 FirebaseUser user = firebaseAuth.getCurrentUser();
-                UpdateUI();
+                UpdateUI(user);
             }
         };
 
@@ -196,7 +204,7 @@ public class LoginActivity extends AppCompatActivity {
 
                     Log.d(TAG, "Sign in with credential: Succesful");
                     FirebaseUser user = mAuth.getCurrentUser();
-                    UpdateUI();
+                    UpdateUI(user);
                 } else {
 
                     Log.d(TAG, "Sign in with credential: Failure", task.getException());
@@ -215,10 +223,11 @@ public class LoginActivity extends AppCompatActivity {
             public void onComplete(@NonNull Task<AuthResult> task) {
                 
                 if(task.isSuccessful()){
-                    
+
+                    user = task.getResult().getUser();
                     loginProgress.setVisibility(View.INVISIBLE);
                     btnLogin.setVisibility(View.VISIBLE);
-                    UpdateUI();
+                    UpdateUI(user);
                 }
                 else {
                     showMessage(task.getException().getMessage());
@@ -229,8 +238,9 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
 
-    private void UpdateUI() {
+    private void UpdateUI(FirebaseUser user) {
 
+        writeNewUser(user.getUid(), user.getDisplayName(), user.getEmail());
         startActivity(HomeActivity);
         finish();
     }
@@ -272,7 +282,7 @@ public class LoginActivity extends AppCompatActivity {
                         if (task.isSuccessful()) {
                             // Sign in success, update UI with the signed-in user's information
                             FirebaseUser user = mAuth.getCurrentUser();
-                            UpdateUI();
+                            UpdateUI(user);
                         } else {
                             // If sign in fails, display a message to the user.
                             Toast.makeText(LoginActivity.this, "Google Authentication Failed", Toast.LENGTH_SHORT).show();
@@ -292,27 +302,27 @@ public class LoginActivity extends AppCompatActivity {
 
         googleLogout = getIntent().getBooleanExtra("googleLogout", googleLogout);
 
-        if(googleLogout == true){
+        if(googleLogout){
 
             signOut();
         } else {
-
+            FirebaseUser user = mAuth.getCurrentUser();
             // Check for existing Google Sign In account, if the user is already signed in
             // the GoogleSignInAccount will be non-null.
             GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
 
             if (account != null) {
 
-                UpdateUI();
+                UpdateUI(user);
             }
         }
 
         //mAuth.addAuthStateListener(authStateListener);
-        FirebaseUser user = mAuth.getCurrentUser();
+        user = mAuth.getCurrentUser();
 
         if(user != null){
 
-            UpdateUI();
+            UpdateUI(user);
         }
     }
 
@@ -330,5 +340,11 @@ public class LoginActivity extends AppCompatActivity {
     private void signOut() {
 
         mGoogleSignInClient.signOut();
+    }
+
+    private void writeNewUser(String userId, String name, String email) {
+
+        User user = new User(name, email);
+        myRef.child("Users").child(userId).setValue(user);
     }
 }

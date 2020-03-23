@@ -7,7 +7,6 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 import android.Manifest;
-import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
@@ -20,6 +19,7 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import com.example.blogapp.Models.User;
 import com.example.blogapp.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -28,6 +28,8 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
@@ -44,6 +46,8 @@ public class RegisterActivity extends AppCompatActivity {
     private Button regBtn;
 
     private FirebaseAuth mAuth;
+    private FirebaseDatabase mDatabase;
+    private DatabaseReference myRef;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,6 +63,8 @@ public class RegisterActivity extends AppCompatActivity {
         loadingProgress.setVisibility(View.INVISIBLE);
 
         mAuth = FirebaseAuth.getInstance();
+        mDatabase = FirebaseDatabase.getInstance();
+        myRef = mDatabase.getReference();
 
         regBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -157,7 +163,7 @@ public class RegisterActivity extends AppCompatActivity {
                                         if (task.isSuccessful()) {
 
                                             showMessage("Register Complete");
-                                            updateUI();
+                                            updateUI(currentUser);
                                         }
                                     }
                                 });
@@ -182,14 +188,15 @@ public class RegisterActivity extends AppCompatActivity {
                         if (task.isSuccessful()) {
 
                         showMessage("Register Complete");
-                        updateUI();
+                        updateUI(currentUser);
                         }
                     }
                 });
     }
 
-    private void updateUI() {
+    private void updateUI(FirebaseUser user) {
 
+        writeNewUser(user.getUid(), user.getDisplayName(), user.getEmail());
         Intent homeActivity = new Intent(getApplicationContext(), HomeActivity.class);
         startActivity(homeActivity);
         finish();
@@ -234,5 +241,11 @@ public class RegisterActivity extends AppCompatActivity {
             pickedImgUri = data.getData();
             imgUserPhoto.setImageURI(pickedImgUri);
         }
+    }
+
+    private void writeNewUser(String userId, String name, String email) {
+
+        User user = new User(name, email);
+        myRef.child("Users").child(userId).setValue(user);
     }
 }
