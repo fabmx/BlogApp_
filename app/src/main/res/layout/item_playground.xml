@@ -8,7 +8,7 @@
 
 
     <ImageView
-        android:background="@drawable/item_playgroung_background"
+        android:background="@color/imageBackground"
         android:id="@+id/imageView"
         android:layout_width="0dp"
         android:layout_height="135dp"
@@ -42,6 +42,7 @@
         android:layout_marginLeft="16dp"
         android:layout_marginTop="16dp"
         android:text="Via Masia"
+        android:textColor="@color/textOnImageBack"
         app:layout_constraintStart_toEndOf="@+id/item_pg_img"
         app:layout_constraintTop_toTopOf="@+id/imageView" />
 
@@ -63,11 +64,12 @@
         android:layout_marginStart="16dp"
         android:layout_marginLeft="16dp"
         android:text="score"
+        android:textColor="@color/textOnImageBack"
         app:layout_constraintBottom_toBottomOf="@+id/ratingBar"
         app:layout_constraintStart_toEndOf="@+id/ratingBar" />
 
     <ImageView
-        android:tint="#CAC7C7"
+        android:tint="@color/textOnImageBack"
         android:id="@+id/notify"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

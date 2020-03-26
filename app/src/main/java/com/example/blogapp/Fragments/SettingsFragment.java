@@ -29,6 +29,14 @@ public class SettingsFragment extends Fragment {
         final SharedPreferences.Editor sharedPrefsEdit = appSettingsPref.edit();
         Boolean isNightModeOn = appSettingsPref.getBoolean("NightMode", false);
 
+        if(isNightModeOn){
+
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+
+        } else {
+
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+        }
 
         theme = view.findViewById(R.id.switchTheme);
         theme.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -48,6 +56,8 @@ public class SettingsFragment extends Fragment {
                 }
             }
         });
+
+        theme.setChecked(isNightModeOn);
 
         return view;
     }

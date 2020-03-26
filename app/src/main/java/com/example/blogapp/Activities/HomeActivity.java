@@ -7,12 +7,14 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.ContextCompat;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.os.PersistableBundle;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
@@ -55,11 +57,21 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
 
     Boolean googleLogout = false;
 
+    Boolean titleHome = true;
+    Boolean titleProfile = false;
+    Boolean titleSettings = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
+
+        if(savedInstanceState != null){
+
+            titleHome = savedInstanceState.getBoolean("titleHome");
+            titleProfile = savedInstanceState.getBoolean("titleProfile");
+            titleSettings = savedInstanceState.getBoolean("titleSettings");
+        }
 
         mAuth = FirebaseAuth.getInstance();
         currentUser = mAuth.getCurrentUser();
@@ -106,6 +118,21 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
             fragmentTransaction.replace(R.id.container_fragment, new MainFragment());
             fragmentTransaction.commit();
         }
+
+        if(titleHome == false && titleProfile == true && titleSettings == false){
+
+            getSupportActionBar().setTitle("Account");
+        }
+
+        if(titleHome == true && titleProfile == false && titleSettings == false){
+
+            getSupportActionBar().setTitle("Home");
+        }
+
+        if(titleHome == false && titleProfile == false && titleSettings == true){
+
+            getSupportActionBar().setTitle("Settings");
+        }
     }
 
 
@@ -127,7 +154,11 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
 
         if(menuItem.getItemId() == R.id.home){
 
-            getSupportActionBar().setTitle("BlogApp");
+            titleHome = true;
+            titleProfile = false;
+            titleSettings = false;
+
+            getSupportActionBar().setTitle("Home");
 
             fragmentManager = getSupportFragmentManager();
             fragmentTransaction = fragmentManager.beginTransaction();
@@ -136,6 +167,10 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         }
 
         if(menuItem.getItemId() == R.id.account){
+
+            titleHome = false;
+            titleProfile = true;
+            titleSettings = false;
 
             getSupportActionBar().setTitle("Account");
 
@@ -156,6 +191,10 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         }
 
         if(menuItem.getItemId() == R.id.settings){
+
+            titleHome = false;
+            titleProfile = false;
+            titleSettings = true;
 
             getSupportActionBar().setTitle("Settings");
             //getSupportActionBar().setBackgroundDrawable(new ColorDrawable(ContextCompat.getColor(this, R.color.colorPrimary)));
@@ -184,5 +223,36 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
             finish();
         }
         return true;
+    }
+
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+
+        outState.putBoolean("titleHome", titleHome);
+        outState.putBoolean("titleProfile", titleProfile);
+        outState.putBoolean("titleSettings", titleSettings);
+
+    }
+
+    @Override
+    protected void onRestoreInstanceState(@NonNull Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+
+        savedInstanceState.putBoolean("titleHome", titleHome);
+        savedInstanceState.putBoolean("titleProfile", titleProfile);
+        savedInstanceState.putBoolean("titleSettings", titleSettings);
+    }
+
+    public void updateNavHeaderPhoto(FirebaseUser currentUser){
+
+        View headerView = navigationView.getHeaderView(0);
+
+        ImageView navUserPhoto = headerView.findViewById(R.id.nav_user_photo);
+
+        if(currentUser.getPhotoUrl() != null) {
+
+            Glide.with(this).load(currentUser.getPhotoUrl()).apply(RequestOptions.circleCropTransform()).into(navUserPhoto);
+        }
     }
 }

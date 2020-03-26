@@ -15,7 +15,7 @@
         android:layout_marginEnd="16dp"
         android:layout_marginRight="16dp"
         android:layout_marginBottom="32dp"
-        android:background="@color/color_medium_gray"
+        android:background="@color/imageBackground"
         app:layout_constraintBottom_toTopOf="@+id/textView2"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
@@ -27,6 +27,7 @@
         android:layout_height="90dp"
         android:layout_marginStart="16dp"
         android:layout_marginLeft="16dp"
+        android:clickable="true"
         app:layout_constraintBottom_toBottomOf="@+id/imageView2"
         app:layout_constraintStart_toStartOf="@+id/imageView2"
         app:layout_constraintTop_toTopOf="@+id/imageView2"
@@ -38,9 +39,9 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginLeft="16dp"
-        android:layout_marginBottom="16dp"
+        android:layout_marginBottom="8dp"
         android:text="Modify username"
-        android:textColor="#FF000000"
+        android:textColor="@color/color_text"
         android:textSize="18sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@+id/textView3"
@@ -54,12 +55,13 @@
         android:layout_marginLeft="16dp"
         android:layout_marginEnd="16dp"
         android:layout_marginRight="16dp"
-        android:layout_marginBottom="24dp"
-        android:background="@color/color_medium_gray"
+        android:layout_marginBottom="16dp"
+        android:background="@color/imageBackground"
         android:ems="10"
         android:hint="Change your name"
         android:inputType="textPersonName"
-        app:layout_constraintBottom_toTopOf="@+id/textView4"
+        android:textColorHint="@color/textOnImageBack"
+        app:layout_constraintBottom_toTopOf="@+id/textView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
@@ -69,9 +71,9 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginLeft="16dp"
-        android:layout_marginBottom="16dp"
+        android:layout_marginBottom="8dp"
         android:text="Modify password"
-        android:textColor="#FF000000"
+        android:textColor="@color/color_text"
         android:textSize="18sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@+id/regPassword3"
@@ -86,12 +88,14 @@
         android:layout_marginEnd="16dp"
         android:layout_marginRight="16dp"
         android:layout_marginBottom="8dp"
-        android:background="@color/color_medium_gray"
+        android:background="@color/imageBackground"
         android:ems="10"
         android:hint="Password"
         android:inputType="textPassword"
+        android:textColorHint="@color/textOnImageBack"
         app:layout_constraintBottom_toTopOf="@+id/regPassword4"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent" />
 
     <EditText
@@ -102,13 +106,15 @@
         android:layout_marginLeft="16dp"
         android:layout_marginEnd="16dp"
         android:layout_marginRight="16dp"
-        android:layout_marginBottom="160dp"
-        android:background="@color/color_medium_gray"
+        android:layout_marginBottom="110dp"
+        android:background="@color/imageBackground"
         android:ems="10"
         android:hint="Confirm password"
         android:inputType="textPassword"
+        android:textColorHint="@color/textOnImageBack"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
@@ -119,6 +125,7 @@
         android:layout_marginLeft="16dp"
         android:textSize="18sp"
         android:textStyle="normal"
+        android:textColor="@color/color_text"
         app:layout_constraintBottom_toBottomOf="@+id/imageView2"
         app:layout_constraintStart_toEndOf="@+id/profilePhoto"
         app:layout_constraintTop_toTopOf="@+id/imageView2" />
@@ -132,6 +139,7 @@
         android:layout_marginTop="8dp"
         android:textSize="18sp"
         android:textStyle="normal"
+        android:textColor="@color/color_text"
         app:layout_constraintStart_toEndOf="@+id/profilePhoto"
         app:layout_constraintTop_toBottomOf="@+id/textView8" />
 
@@ -143,6 +151,7 @@
         android:layout_marginLeft="16dp"
         android:layout_marginBottom="8dp"
         android:text="Name:"
+        android:textColor="@color/textOnImageBack"
         app:layout_constraintBottom_toTopOf="@+id/textView5"
         app:layout_constraintStart_toEndOf="@+id/profilePhoto" />
 
@@ -154,6 +163,40 @@
         android:layout_marginLeft="16dp"
         android:layout_marginTop="16dp"
         android:text="Email:"
+        android:textColor="@color/textOnImageBack"
         app:layout_constraintStart_toEndOf="@+id/profilePhoto"
         app:layout_constraintTop_toBottomOf="@+id/textView5" />
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginBottom="8dp"
+        android:text="Modify email"
+        android:textColor="@color/color_text"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/textView9"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <EditText
+        android:id="@+id/textView9"
+        android:layout_width="0dp"
+        android:layout_height="45dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginBottom="16dp"
+        android:background="@color/imageBackground"
+        android:ems="10"
+        android:inputType="textEmailAddress"
+        android:text="Change your email"
+        android:textColor="@color/textOnImageBack"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toTopOf="@+id/textView4"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>
