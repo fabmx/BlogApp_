@@ -86,10 +86,10 @@ public class ProfileFragment extends Fragment {
         editPassword = view.findViewById(R.id.textView4);
         username = view.findViewById(R.id.textView3);
         usermail = view.findViewById(R.id.textView9);
-        password = view.findViewById(R.id.regPassword3);
+        password = view.findViewById(R.id.settings_pwd);
         password2 = view.findViewById(R.id.regPassword4);
         confirmChanges = view.findViewById(R.id.confirm);
-        reset = view.findViewById(R.id.reset);
+        reset = view.findViewById(R.id.delete);
 
         mAuth = FirebaseAuth.getInstance();
         currentUser = mAuth.getCurrentUser();

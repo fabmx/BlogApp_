@@ -13,13 +13,46 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
         android:layout_marginLeft="24dp"
+        android:layout_marginTop="48dp"
         android:layout_marginEnd="24dp"
         android:layout_marginRight="24dp"
         android:text="Change theme"
+        android:paddingLeft="8dp"
         android:textColor="@color/color_text"
         android:textSize="24sp"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <EditText
+        android:id="@+id/settings_pwd"
+        android:layout_width="0dp"
+        android:layout_height="45dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginLeft="24dp"
+        android:layout_marginTop="32dp"
+        android:layout_marginEnd="24dp"
+        android:layout_marginRight="24dp"
+        android:background="@color/imageBackground"
+        android:ems="10"
+        android:hint="Current password"
+        android:inputType="textPassword"
+        android:paddingLeft="8dp"
+        android:textColorHint="@color/textOnImageBack"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/switchTheme" />
+
+    <Button
+        android:id="@+id/delete"
+        android:layout_width="160dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:background="@drawable/reg_btn_style"
+        android:text="Delete account"
+        android:textColor="#fff"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/settings_pwd" />
 </androidx.constraintlayout.widget.ConstraintLayout>

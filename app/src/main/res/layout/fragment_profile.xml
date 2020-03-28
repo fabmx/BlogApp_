@@ -81,7 +81,7 @@
         app:layout_constraintStart_toStartOf="parent" />
 
     <EditText
-        android:id="@+id/regPassword3"
+        android:id="@+id/settings_pwd"
         android:layout_width="0dp"
         android:layout_height="45dp"
         android:layout_marginStart="16dp"
@@ -115,7 +115,7 @@
         android:inputType="textPassword"
         android:paddingLeft="8dp"
         android:textColorHint="@color/textOnImageBack"
-        app:layout_constraintBottom_toTopOf="@+id/regPassword3"
+        app:layout_constraintBottom_toTopOf="@+id/settings_pwd"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent" />
@@ -212,13 +212,13 @@
         android:background="@drawable/reg_btn_style"
         android:text="Save changes"
         android:textColor="#fff"
-        app:layout_constraintBottom_toTopOf="@+id/reset"
+        app:layout_constraintBottom_toTopOf="@+id/delete"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.501"
         app:layout_constraintStart_toStartOf="parent" />
 
     <Button
-        android:id="@+id/reset"
+        android:id="@+id/delete"
         android:layout_width="160dp"
         android:layout_height="wrap_content"
         android:layout_marginBottom="16dp"
