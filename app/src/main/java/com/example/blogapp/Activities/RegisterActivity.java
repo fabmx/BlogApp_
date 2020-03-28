@@ -126,7 +126,6 @@ public class RegisterActivity extends AppCompatActivity {
                             }else
                                 updateUserInfoWithoutPhoto(name, mAuth.getCurrentUser());
 
-
                         }
                         else {
 

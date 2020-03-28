@@ -255,4 +255,28 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
             Glide.with(this).load(currentUser.getPhotoUrl()).apply(RequestOptions.circleCropTransform()).into(navUserPhoto);
         }
     }
+
+    public void updateNavHeaderName(FirebaseUser currentUser){
+
+        View headerView = navigationView.getHeaderView(0);
+
+        TextView navUsername = headerView.findViewById(R.id.nav_username);
+
+        if(currentUser.getDisplayName() != null) {
+
+            navUsername.setText(currentUser.getDisplayName());
+        }
+    }
+
+    public void updateNavHeaderMail(FirebaseUser currentUser){
+
+        View headerView = navigationView.getHeaderView(0);
+
+        TextView navUserMail = headerView.findViewById(R.id.nav_user_mail);
+
+        if(currentUser.getEmail() != null) {
+
+            navUserMail.setText(currentUser.getEmail());
+        }
+    }
 }
