@@ -22,6 +22,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
+import com.example.blogapp.Fragments.InfoFragment;
 import com.example.blogapp.Fragments.MainFragment;
 import com.example.blogapp.Fragments.ProfileFragment;
 
@@ -60,6 +61,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     Boolean titleHome = true;
     Boolean titleProfile = false;
     Boolean titleSettings = false;
+    Boolean titleInfo = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,6 +73,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
             titleHome = savedInstanceState.getBoolean("titleHome");
             titleProfile = savedInstanceState.getBoolean("titleProfile");
             titleSettings = savedInstanceState.getBoolean("titleSettings");
+            titleInfo = savedInstanceState.getBoolean("titleInfo");
         }
 
         mAuth = FirebaseAuth.getInstance();
@@ -119,19 +122,24 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
             fragmentTransaction.commit();
         }
 
-        if(titleHome == false && titleProfile == true && titleSettings == false){
+        if(titleHome == false && titleProfile == true && titleSettings == false && titleInfo == false){
 
             getSupportActionBar().setTitle("Account");
         }
 
-        if(titleHome == true && titleProfile == false && titleSettings == false){
+        if(titleHome == true && titleProfile == false && titleSettings == false && titleInfo == false){
 
             getSupportActionBar().setTitle("Home");
         }
 
-        if(titleHome == false && titleProfile == false && titleSettings == true){
+        if(titleHome == false && titleProfile == false && titleSettings == true && titleInfo == false){
 
             getSupportActionBar().setTitle("Settings");
+        }
+
+        if(titleHome == false && titleProfile == false && titleSettings == false && titleInfo == true){
+
+            getSupportActionBar().setTitle("Info");
         }
     }
 
@@ -157,6 +165,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
             titleHome = true;
             titleProfile = false;
             titleSettings = false;
+            titleInfo = false;
 
             getSupportActionBar().setTitle("Home");
 
@@ -171,6 +180,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
             titleHome = false;
             titleProfile = true;
             titleSettings = false;
+            titleInfo = false;
 
             getSupportActionBar().setTitle("Account");
 
@@ -185,7 +195,19 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
 
         }
 
-        if(menuItem.getItemId() == R.id.notifications){
+        if(menuItem.getItemId() == R.id.info){
+
+            titleHome = false;
+            titleProfile = false;
+            titleSettings = false;
+            titleInfo = true;
+
+            getSupportActionBar().setTitle("Info");
+
+            fragmentManager = getSupportFragmentManager();
+            fragmentTransaction = fragmentManager.beginTransaction();
+            fragmentTransaction.replace(R.id.container_fragment, new InfoFragment());
+            fragmentTransaction.commit();
 
 
         }
@@ -195,9 +217,9 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
             titleHome = false;
             titleProfile = false;
             titleSettings = true;
+            titleInfo = false;
 
             getSupportActionBar().setTitle("Settings");
-            //getSupportActionBar().setBackgroundDrawable(new ColorDrawable(ContextCompat.getColor(this, R.color.colorPrimary)));
 
             fragmentManager = getSupportFragmentManager();
             fragmentTransaction = fragmentManager.beginTransaction();
@@ -232,6 +254,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         outState.putBoolean("titleHome", titleHome);
         outState.putBoolean("titleProfile", titleProfile);
         outState.putBoolean("titleSettings", titleSettings);
+        outState.putBoolean("titleInfo", titleInfo);
 
     }
 
@@ -242,6 +265,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         savedInstanceState.putBoolean("titleHome", titleHome);
         savedInstanceState.putBoolean("titleProfile", titleProfile);
         savedInstanceState.putBoolean("titleSettings", titleSettings);
+        savedInstanceState.putBoolean("titleInfo", titleInfo);
     }
 
     public void updateNavHeaderPhoto(FirebaseUser currentUser){

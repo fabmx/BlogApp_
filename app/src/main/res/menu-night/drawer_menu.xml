@@ -20,12 +20,6 @@
                android:icon="@drawable/ic_group_black_24dp"
                android:iconTint="@color/color_text"
                android:title="Groups" />
-           <item
-               android:id="@+id/notifications"
-               android:icon="@drawable/ic_notifications_black_24dp"
-               android:iconTint="@color/color_text"
-               android:title="Notifications" />
-
        </menu>
 
     </item>
@@ -39,6 +33,11 @@
                 android:icon="@drawable/ic_settings_black_24dp"
                 android:iconTint="@color/color_text"
                 android:title="Settings" />
+            <item
+                android:id="@+id/info"
+                android:icon="@drawable/ic_info_outline_black_24dp"
+                android:iconTint="@color/color_text"
+                android:title="Info" />
             <item
                 android:id="@+id/logout"
                 android:icon="@drawable/ic_exit_to_app_black_24dp"
