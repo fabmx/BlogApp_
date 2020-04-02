@@ -94,7 +94,6 @@ public class MainFragment extends Fragment {
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
         }
 
-        // Inflate the layout for this fragment
         View fragmentView = inflater.inflate(R.layout.fragment_main, container, false);
         rvCourts = fragmentView.findViewById(R.id.rv_court);
         rvCourts.setLayoutManager(new LinearLayoutManager(getActivity()));
@@ -158,14 +157,10 @@ public class MainFragment extends Fragment {
     private void initmDataCourts() {
 
         mData = new ArrayList<>();
-        mData.add(new Court(R.mipmap.via_masia));
-        mData.add(new Court(R.mipmap.via_martini));
-        mData.add(new Court(R.mipmap.largo_settimio_passamonti));
-        mData.add(new Court(R.mipmap.via_masia));
-        mData.add(new Court(R.mipmap.via_martini));
-        mData.add(new Court(R.mipmap.largo_settimio_passamonti));
-        mData.add(new Court(R.mipmap.via_masia));
-        mData.add(new Court(R.mipmap.via_martini));
-        mData.add(new Court(R.mipmap.largo_settimio_passamonti));
+        mData.add(new Court("Via Masia", null, 3, R.mipmap.via_masia));
+        mData.add(new Court("Via Martini", null, 4, R.mipmap.via_martini));
+        mData.add(new Court("Largo S. Passamonti", null, 4,R.mipmap.largo_settimio_passamonti));
+        mData.add(new Court("Via Peppe", null, 4, R.mipmap.largo_settimio_passamonti));
+
     }
 }

@@ -12,6 +12,7 @@ import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -21,6 +22,7 @@ import android.widget.Toast;
 
 import com.example.blogapp.Models.User;
 import com.example.blogapp.R;
+import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
@@ -30,9 +32,15 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.functions.FirebaseFunctions;
+import com.google.firebase.functions.FirebaseFunctionsException;
+import com.google.firebase.functions.HttpsCallableResult;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class RegisterActivity extends AppCompatActivity {
 
@@ -48,6 +56,7 @@ public class RegisterActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
     private FirebaseDatabase mDatabase;
     private DatabaseReference myRef;
+    private FirebaseFunctions mFunctions;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,6 +71,7 @@ public class RegisterActivity extends AppCompatActivity {
         regBtn = findViewById(R.id.regBtn);
         loadingProgress.setVisibility(View.INVISIBLE);
 
+        mFunctions = FirebaseFunctions.getInstance();
         mAuth = FirebaseAuth.getInstance();
         mDatabase = FirebaseDatabase.getInstance();
         myRef = mDatabase.getReference();
@@ -195,7 +205,8 @@ public class RegisterActivity extends AppCompatActivity {
 
     private void updateUI(FirebaseUser user) {
 
-        writeNewUser(user.getUid(), user.getDisplayName(), user.getEmail());
+        onAddUser(user);
+        //writeNewUser(user.getUid(), user.getDisplayName(), user.getEmail());
         Intent homeActivity = new Intent(getApplicationContext(), HomeActivity.class);
         startActivity(homeActivity);
         finish();
@@ -246,5 +257,58 @@ public class RegisterActivity extends AppCompatActivity {
 
         User user = new User(name, email);
         myRef.child("Users").child(userId).setValue(user);
+    }
+
+    private Task<String> addUser(String name, String email) {
+
+        // Create the arguments to the callable function.
+        User user = new User(name, email);
+
+        Map<String, Object> data = new HashMap<>();
+        data.put("name", name);
+        data.put("email", email);
+        data.put("push", true);
+
+        return mFunctions
+                .getHttpsCallable("addUser")
+                .call(data)
+                .continueWith(new Continuation<HttpsCallableResult, String>() {
+                    @Override
+                    public String then(@NonNull Task<HttpsCallableResult> task) throws Exception {
+                        // This continuation runs on either success or failure, but if the task
+                        // has failed then getResult() will throw an Exception which will be
+                        // propagated down.
+                        String result = (String) task.getResult().getData();
+                        return result;
+                    }
+                });
+    }
+
+    private void onAddUser(FirebaseUser user) {
+
+        String name = user.getDisplayName();
+        String email = user.getEmail();
+        // [START call_add_message]
+        addUser(name, email).addOnCompleteListener(new OnCompleteListener<String>() {
+            @Override
+            public void onComplete(@NonNull Task<String> task) {
+                if (!task.isSuccessful()) {
+                    //Toast.makeText(RegisterActivity.this,"Backend error", Toast.LENGTH_SHORT).show();
+                    Exception e = task.getException();
+                    if (e instanceof FirebaseFunctionsException) {
+                        FirebaseFunctionsException ffe = (FirebaseFunctionsException) e;
+                        FirebaseFunctionsException.Code code = ffe.getCode();
+                        Object details = ffe.getDetails();
+                    }
+
+                    // [START_EXCLUDE]
+                    Toast.makeText(RegisterActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
+                    return;
+                    // [END_EXCLUDE]
+                }
+                String result = task.getResult();
+                Toast.makeText(RegisterActivity.this, result, Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 }

@@ -37,6 +37,8 @@ public class CourtAdapter extends RecyclerView.Adapter<CourtAdapter.courtviewhol
         View view = LayoutInflater.from(mContext)
                 .inflate(R.layout.item_playground, parent, false);
 
+        //TextView via = view.findViewById(R.id.item_pg_street);
+
         return new courtviewholder(view);
     }
 
@@ -47,6 +49,9 @@ public class CourtAdapter extends RecyclerView.Adapter<CourtAdapter.courtviewhol
                 .load(mData.get(position).getDrawableResource())
                 .transforms(new CenterCrop(), new RoundedCorners(16))
                 .into(holder.imgCourt);
+
+        holder.street.setText(mData.get(position).getStreet());
+        holder.ratingBar.setNumStars((int) mData.get(position).getRating());
     }
 
     @Override
@@ -56,7 +61,7 @@ public class CourtAdapter extends RecyclerView.Adapter<CourtAdapter.courtviewhol
 
     public class courtviewholder extends RecyclerView.ViewHolder {
 
-        ImageView imgCourt, imgFav;
+        ImageView imgCourt;
         TextView street;
         RatingBar ratingBar;
 
@@ -66,6 +71,9 @@ public class CourtAdapter extends RecyclerView.Adapter<CourtAdapter.courtviewhol
             imgCourt = itemView.findViewById(R.id.item_pg_img);
             street = itemView.findViewById(R.id.item_pg_street);
             ratingBar = itemView.findViewById(R.id.ratingBar);
+
+
+
         }
     }
 }
