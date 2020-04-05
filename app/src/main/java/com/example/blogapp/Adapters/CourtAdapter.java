@@ -1,6 +1,7 @@
 package com.example.blogapp.Adapters;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.CenterCrop;
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
+import com.example.blogapp.Activities.ImageActivity;
 import com.example.blogapp.Models.Court;
 import com.example.blogapp.R;
 
@@ -37,8 +39,6 @@ public class CourtAdapter extends RecyclerView.Adapter<CourtAdapter.courtviewhol
         View view = LayoutInflater.from(mContext)
                 .inflate(R.layout.item_playground, parent, false);
 
-        //TextView via = view.findViewById(R.id.item_pg_street);
-
         return new courtviewholder(view);
     }
 
@@ -50,8 +50,17 @@ public class CourtAdapter extends RecyclerView.Adapter<CourtAdapter.courtviewhol
                 .transforms(new CenterCrop(), new RoundedCorners(16))
                 .into(holder.imgCourt);
 
+        final Court court = mData.get(position);
+
         holder.street.setText(mData.get(position).getStreet());
-        holder.ratingBar.setNumStars((int) mData.get(position).getRating());
+        holder.addImg.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent imgActivity = new Intent(mContext.getApplicationContext(), ImageActivity.class);
+                imgActivity.putExtra("courtId", court.getStreet());
+                mContext.startActivity(imgActivity);
+            }
+        });
     }
 
     @Override
@@ -61,7 +70,7 @@ public class CourtAdapter extends RecyclerView.Adapter<CourtAdapter.courtviewhol
 
     public class courtviewholder extends RecyclerView.ViewHolder {
 
-        ImageView imgCourt;
+        ImageView imgCourt, addImg;
         TextView street;
         RatingBar ratingBar;
 
@@ -71,9 +80,7 @@ public class CourtAdapter extends RecyclerView.Adapter<CourtAdapter.courtviewhol
             imgCourt = itemView.findViewById(R.id.item_pg_img);
             street = itemView.findViewById(R.id.item_pg_street);
             ratingBar = itemView.findViewById(R.id.ratingBar);
-
-
-
+            addImg = itemView.findViewById(R.id.add_image);
         }
     }
 }

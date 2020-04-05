@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -8,7 +7,6 @@
 
 
     <ImageView
-        android:background="@color/imageBackground"
         android:id="@+id/imageView"
         android:layout_width="0dp"
         android:layout_height="135dp"
@@ -16,6 +14,7 @@
         android:layout_marginLeft="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginRight="8dp"
+        android:background="@color/imageBackground"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
@@ -49,12 +48,12 @@
     <RatingBar
         android:id="@+id/ratingBar"
         style="?android:attr/ratingBarStyleSmall"
-        android:isIndicator="false"
         android:layout_width="79dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginLeft="16dp"
         android:layout_marginTop="40dp"
+        android:isIndicator="false"
         app:layout_constraintStart_toEndOf="@+id/item_pg_img"
         app:layout_constraintTop_toBottomOf="@+id/item_pg_street" />
 
@@ -70,26 +69,42 @@
         app:layout_constraintStart_toEndOf="@+id/ratingBar" />
 
     <ImageView
-        android:tint="@color/textOnImageBack"
         android:id="@+id/notify"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
         android:layout_marginRight="16dp"
+        android:tint="@color/textOnImageBack"
         app:layout_constraintEnd_toEndOf="@+id/imageView"
         app:layout_constraintTop_toTopOf="@+id/imageView"
         app:srcCompat="@drawable/ic_notifications_black_24dp" />
 
     <ImageView
-        android:tint="#F12703"
         android:id="@+id/map"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginLeft="16dp"
         android:layout_marginTop="8dp"
+        android:tint="#F12703"
         app:layout_constraintStart_toEndOf="@+id/item_pg_img"
         app:layout_constraintTop_toBottomOf="@+id/ratingBar"
         app:srcCompat="@drawable/ic_place_black_24dp" />
+
+    <ImageView
+
+        android:id="@+id/add_image"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
+        android:background="@drawable/circle_bg"
+        android:clickable="true"
+        android:padding="12dp"
+        android:tint="@color/color_text"
+        app:layout_constraintEnd_toEndOf="@+id/imageView"
+        app:layout_constraintTop_toBottomOf="@+id/ratingBar"
+        app:srcCompat="@drawable/ic_photo_camera_black_24dp" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

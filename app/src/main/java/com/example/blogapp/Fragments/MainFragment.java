@@ -159,7 +159,7 @@ public class MainFragment extends Fragment {
         mData = new ArrayList<>();
         mData.add(new Court("Via Masia", null, 3, R.mipmap.via_masia));
         mData.add(new Court("Via Martini", null, 4, R.mipmap.via_martini));
-        mData.add(new Court("Largo S. Passamonti", null, 4,R.mipmap.largo_settimio_passamonti));
+        mData.add(new Court("Largo Passamonti", null, 4,R.mipmap.largo_settimio_passamonti));
         mData.add(new Court("Via Peppe", null, 4, R.mipmap.largo_settimio_passamonti));
 
     }

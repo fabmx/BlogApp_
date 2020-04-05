@@ -7,6 +7,6 @@
     <color name="color_medium_gray">#f3f3f3</color>
     <color name="imageBackground">#1A3C41</color>
     <color name="textOnImageBack">#2E707E</color>
+    <color name="circle">#152F38</color>
     <color name="color_text">#ffffff</color>
-
 </resources>

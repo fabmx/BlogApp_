@@ -1,6 +1,8 @@
 package com.example.blogapp.Models;
 
-public class Court {
+import java.io.Serializable;
+
+public class Court implements Serializable {
 
     private String street, imgUrl;
     private float rating;
