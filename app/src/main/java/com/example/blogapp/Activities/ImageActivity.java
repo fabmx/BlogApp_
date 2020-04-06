@@ -25,8 +25,13 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
+
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
+import com.example.blogapp.Fragments.ImagesFragment;
+import com.example.blogapp.Fragments.MainFragment;
 import com.example.blogapp.Models.Post;
 import com.example.blogapp.Models.User;
 import com.google.android.gms.tasks.Continuation;
@@ -67,6 +72,9 @@ public class ImageActivity extends AppCompatActivity {
     private Uri pickedImgUri = null;
     String courtId = "court";
 
+    FragmentManager fragmentManager;
+    FragmentTransaction fragmentTransaction;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -78,6 +86,7 @@ public class ImageActivity extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
         currentUser = mAuth.getCurrentUser();
         mFunctions = FirebaseFunctions.getInstance();
+
 
         // ini popup
         iniPopup();
@@ -96,6 +105,14 @@ public class ImageActivity extends AppCompatActivity {
                 this, drawer, toolbar, R.string.open, R.string.close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
+
+        //if(savedInstanceState == null){
+        fragmentManager = getSupportFragmentManager();
+        fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.replace(R.id.container_fragment, new ImagesFragment());
+        fragmentTransaction.commit();
+        //}
+
     }
 
     private void checkAndRequestForPermission() {
@@ -117,7 +134,7 @@ public class ImageActivity extends AppCompatActivity {
 
     private void openGallery() {
 
-        Intent galleryIntent = new Intent(Intent.ACTION_GET_CONTENT);
+        Intent galleryIntent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
         galleryIntent.setType("image/*");
         startActivityForResult(galleryIntent, REQUESCODE);
     }

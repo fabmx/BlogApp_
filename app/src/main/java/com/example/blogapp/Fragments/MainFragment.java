@@ -157,10 +157,13 @@ public class MainFragment extends Fragment {
     private void initmDataCourts() {
 
         mData = new ArrayList<>();
-        mData.add(new Court("Via Masia", null, 3, R.mipmap.via_masia));
-        mData.add(new Court("Via Martini", null, 4, R.mipmap.via_martini));
+        mData.add(new Court("Villa Dora Pamphili", null, 4, R.mipmap.pamphili));
+        mData.add(new Court("Via Dei Buonvisi", null, 4, R.mipmap.via_dei_buonvisi));
+        mData.add(new Court("Parco del Colle Oppio", null, 4, R.mipmap.colosseo));
+        mData.add(new Court("Largo Cevasco", null, 4, R.mipmap.tor_3_teste2));
         mData.add(new Court("Largo Passamonti", null, 4,R.mipmap.largo_settimio_passamonti));
-        mData.add(new Court("Via Peppe", null, 4, R.mipmap.largo_settimio_passamonti));
-
+        mData.add(new Court("Via Martini", null, 4, R.mipmap.via_martini));
+        mData.add(new Court("Salita di San Gregorio", null, 4,R.mipmap.salita_san_gregorio));
+        mData.add(new Court("Via Masia", null, 3, R.mipmap.via_masia));
     }
 }
