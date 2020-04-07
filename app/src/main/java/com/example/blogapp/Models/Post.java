@@ -14,7 +14,7 @@ public class Post {
     private String picture;
     private String userId;
     private String userPhoto;
-    //private Object timeStamp ;
+    private Object timeStamp ;
 
 
     public Post(String title, String description, String picture, String userId, String userPhoto) {
@@ -23,7 +23,7 @@ public class Post {
         this.picture = picture;
         this.userId = userId;
         this.userPhoto = userPhoto;
-        //this.timeStamp = ServerValue.TIMESTAMP;
+        this.timeStamp = ServerValue.TIMESTAMP;
     }
 
     public Post() {
@@ -37,6 +37,7 @@ public class Post {
         result.put("picture", picture);
         result.put("userId", userId);
         result.put("userPhoto", userPhoto);
+        result.put("timestamp", timeStamp.toString());
 
         return result;
     }
@@ -70,9 +71,9 @@ public class Post {
         return userPhoto;
     }
 
-    //public Object getTimeStamp() {
-        //return timeStamp;
-    //}
+    public Object getTimeStamp() {
+        return timeStamp;
+    }
 
     public void setTitle(String title) {
         this.title = title;
@@ -94,7 +95,7 @@ public class Post {
         this.userPhoto = userPhoto;
     }
 
-    //public void setTimeStamp(Object timeStamp) {
-        //this.timeStamp = timeStamp;
-    //}
+    public void setTimeStamp(Object timeStamp) {
+        this.timeStamp = timeStamp;
+    }
 }

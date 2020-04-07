@@ -13,10 +13,11 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".Fragments.ImagesFragment"></activity>
+        <activity android:name=".Activities.PostDetailActivity"></activity>
+        <activity android:name=".Fragments.ImagesFragment" />
         <activity
             android:name=".Activities.ImageActivity"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".Activities.RegisterActivity" />
         <activity
             android:name=".Activities.HomeActivity"

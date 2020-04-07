@@ -203,15 +203,34 @@ public class ImageActivity extends AppCompatActivity {
                                 public void onSuccess(Uri uri) {
                                     String imageDownlaodLink = uri.toString();
                                     // create post Object
-                                    Post post = new Post(popupTitle.getText().toString(),
-                                            popupDescription.getText().toString(),
-                                            imageDownlaodLink,
-                                            currentUser.getUid(),
-                                            currentUser.getPhotoUrl().toString());
+
+                                    if(currentUser.getPhotoUrl() != null){
+
+                                        Post post = new Post(popupTitle.getText().toString(),
+                                                popupDescription.getText().toString(),
+                                                imageDownlaodLink,
+                                                currentUser.getUid(),
+                                                currentUser.getPhotoUrl().toString());
+
+                                        // Add post to firebase database
+                                        onAddCourtImage(post);
+
+                                    }else {
+
+                                        Post post = new Post(popupTitle.getText().toString(),
+                                                popupDescription.getText().toString(),
+                                                imageDownlaodLink,
+                                                currentUser.getUid(),
+                                                null);
+
+                                        // Add post to firebase database
+                                        onAddCourtImage(post);
+                                    }
+
 
                                     // Add post to firebase database
                                     //addPost(post);
-                                    onAddCourtImage(post);
+
                                 }
                             }).addOnFailureListener(new OnFailureListener() {
                                 @Override
@@ -257,6 +276,7 @@ public class ImageActivity extends AppCompatActivity {
         images.put("title", post.getTitle());
         images.put("userId", post.getUserId());
         images.put("userPhoto", post.getUserPhoto());
+        images.put("timestamp", post.getTimeStamp());
         images.put("courtId", courtId);
 
         return mFunctions
@@ -274,7 +294,7 @@ public class ImageActivity extends AppCompatActivity {
                 });
     }
 
-    private void onAddCourtImage(Post post) {
+    private void onAddCourtImage(final Post post) {
 
         // [START call_add_message]
         addCourtImage(post).addOnCompleteListener(new OnCompleteListener<String>() {
@@ -294,8 +314,9 @@ public class ImageActivity extends AppCompatActivity {
                     return;
                     // [END_EXCLUDE]
                 }
-                String result = task.getResult();
-                Toast.makeText(ImageActivity.this, "Post: '" + result + "' added", Toast.LENGTH_SHORT).show();
+                String key_value = task.getResult();
+                post.setPostKey(key_value);
+                Toast.makeText(ImageActivity.this, "Post: '" + key_value + "' added", Toast.LENGTH_SHORT).show();
                 popupClickProgress.setVisibility(View.INVISIBLE);
                 popupAddBtn.setVisibility(View.VISIBLE);
                 popAddPost.dismiss();
