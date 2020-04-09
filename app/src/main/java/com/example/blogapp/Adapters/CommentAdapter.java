@@ -12,6 +12,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.example.blogapp.Models.Comment;
 import com.example.blogapp.R;
 
@@ -39,11 +40,12 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.CommentV
     @Override
     public void onBindViewHolder(@NonNull CommentViewHolder holder, int position) {
 
-        Glide.with(mContext).load(mData.get(position).getUimg()).into(holder.img_user);
+        Glide.with(mContext).load(mData.get(position).getUimg())
+                .apply(RequestOptions.circleCropTransform())
+                .into(holder.img_user);
         holder.tv_name.setText(mData.get(position).getUname());
         holder.tv_content.setText(mData.get(position).getContent());
         holder.tv_date.setText(timestampToString((Long)mData.get(position).getTimestamp()));
-
     }
 
     @Override
@@ -69,7 +71,7 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.CommentV
 
         Calendar calendar = Calendar.getInstance(Locale.ENGLISH);
         calendar.setTimeInMillis(time);
-        String date = DateFormat.format("hh:mm",calendar).toString();
+        String date = DateFormat.format("hh:mm aa",calendar).toString();
         return date;
     }
 }

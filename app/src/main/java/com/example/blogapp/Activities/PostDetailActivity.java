@@ -6,7 +6,6 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
-import android.text.format.DateFormat;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -32,9 +31,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
-import java.util.Locale;
 
 public class PostDetailActivity extends AppCompatActivity {
 
@@ -42,7 +39,6 @@ public class PostDetailActivity extends AppCompatActivity {
     TextView txtPostDesc,txtPostDateName,txtPostTitle;
     EditText editTextComment;
     Button btnAddComment;
-    String postKey = "path";
     FirebaseAuth firebaseAuth;
     FirebaseUser firebaseUser;
     FirebaseDatabase firebaseDatabase;
@@ -50,6 +46,7 @@ public class PostDetailActivity extends AppCompatActivity {
     CommentAdapter commentAdapter;
     List<Comment> listComment;
     static String COMMENT_KEY = "Comment";
+    String postTitle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,18 +76,29 @@ public class PostDetailActivity extends AppCompatActivity {
         firebaseDatabase = FirebaseDatabase.getInstance();
 
         // add Comment button click listner
+        postTitle = getIntent().getExtras().getString("title");
 
         btnAddComment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
                 btnAddComment.setVisibility(View.INVISIBLE);
-                DatabaseReference commentReference = firebaseDatabase.getReference(COMMENT_KEY).child(postKey).push();
+                DatabaseReference commentReference = firebaseDatabase.getReference(COMMENT_KEY).child(postTitle).push();
                 String comment_content = editTextComment.getText().toString();
                 String uid = firebaseUser.getUid();
                 String uname = firebaseUser.getDisplayName();
-                String uimg = firebaseUser.getPhotoUrl().toString();
-                Comment comment = new Comment(comment_content, uid, uimg, uname);
+                //String uimg = firebaseUser.getPhotoUrl().toString();
+
+                Comment comment;
+
+                if(firebaseUser.getPhotoUrl() != null){
+
+                    comment = new Comment(comment_content, uid, firebaseUser.getPhotoUrl().toString(), uname);
+                }else {
+
+                    comment = new Comment(comment_content, uid, null, uname);
+                }
+
 
                 commentReference.setValue(comment).addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
@@ -116,23 +124,29 @@ public class PostDetailActivity extends AppCompatActivity {
         String postImage = getIntent().getExtras().getString("postImage") ;
         Glide.with(this).load(postImage).into(imgPost);
 
-        String postTitle = getIntent().getExtras().getString("title");
         txtPostTitle.setText(postTitle);
 
-        String userpostImage = getIntent().getExtras().getString("userPhoto");
+        String userPostImage = getIntent().getExtras().getString("userPhoto");
 
-        if(userpostImage != null){
+        if(userPostImage != null){
 
-            Glide.with(this).load(userpostImage)
+            Glide.with(this).load(userPostImage)
                     .apply(RequestOptions.circleCropTransform())
                     .into(imgUserPost);
-        }else
+        }else {
+
             Glide.with(this).load(R.drawable.userphoto).into(imgUserPost);
+        }
 
         String postDescription = getIntent().getExtras().getString("description");
         txtPostDesc.setText(postDescription);
 
-        // setcomment user image
+        String name = getIntent().getExtras().getString("username");
+        String date = getIntent().getExtras().getString("day");
+        String date_name = date + " | " + name;
+        txtPostDateName.setText(date_name);
+
+        // set comment user image
         if(firebaseUser.getPhotoUrl() != null){
 
             Glide.with(this).load(firebaseUser.getPhotoUrl())
@@ -145,12 +159,6 @@ public class PostDetailActivity extends AppCompatActivity {
                     .into(imgCurrentUser);
         }
 
-        // get post id
-        postKey = getIntent().getStringExtra("postKey");
-
-        String date = timestampToString(getIntent().getExtras().getLong("postDate"));
-        txtPostDateName.setText(date);
-
         // ini Recyclerview Comment
         iniRvComment();
     }
@@ -159,9 +167,9 @@ public class PostDetailActivity extends AppCompatActivity {
 
         RvComment.setLayoutManager(new LinearLayoutManager(this));
 
-        if(postKey != null){
+        if(postTitle != null){
 
-            DatabaseReference commentRef = firebaseDatabase.getReference(COMMENT_KEY).child(postKey);
+            DatabaseReference commentRef = firebaseDatabase.getReference(COMMENT_KEY).child(postTitle);
             commentRef.addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -189,13 +197,5 @@ public class PostDetailActivity extends AppCompatActivity {
 
         Toast.makeText(this, message, Toast.LENGTH_LONG).show();
 
-    }
-
-    private String timestampToString(long time) {
-
-        Calendar calendar = Calendar.getInstance(Locale.ENGLISH);
-        calendar.setTimeInMillis(time);
-        String date = DateFormat.format("dd-MM-yyyy",calendar).toString();
-        return date;
     }
 }

@@ -258,7 +258,6 @@ public class ProfileFragment extends Fragment {
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-
         if(resultCode == RESULT_OK && requestCode == REQUESTCODE && data != null) {
 
             pickedImgUri = data.getData();

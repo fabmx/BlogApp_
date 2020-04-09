@@ -7,7 +7,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -33,7 +32,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.postViewHolder
     @Override
     public postViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
 
-        View row = LayoutInflater.from(mContext).inflate(R.layout.row_post_item,parent,false);
+        View row = LayoutInflater.from(mContext).inflate(R.layout.row_post_item, parent,false);
         return new postViewHolder(row);
     }
 
@@ -58,6 +57,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.postViewHolder
         final Post post = mData.get(position);
 
         holder.imgPost.setOnClickListener(new View.OnClickListener() {
+
             @Override
             public void onClick(View view) {
                 Intent postDetailActivity = new Intent(mContext.getApplicationContext(), PostDetailActivity.class);
@@ -65,14 +65,9 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.postViewHolder
                 postDetailActivity.putExtra("title", post.getTitle());
                 postDetailActivity.putExtra("postImage", post.getPicture());
                 postDetailActivity.putExtra("description", post.getDescription());
-                postDetailActivity.putExtra("postKey", post.getPostKey());
                 postDetailActivity.putExtra("userPhoto", post.getUserPhoto());
-                // will fix this later i forgot to add user name to post object
-                //postDetailActivity.putExtra("userName",mData.get(position).getUsername);
-                if(post.getTimeStamp() != null) {
-                    long timestamp = (long) post.getTimeStamp();
-                    postDetailActivity.putExtra("postDate", timestamp);
-                }
+                postDetailActivity.putExtra("username", post.getUsername());
+                postDetailActivity.putExtra("day", post.getDay());
 
                 mContext.startActivity(postDetailActivity);
             }

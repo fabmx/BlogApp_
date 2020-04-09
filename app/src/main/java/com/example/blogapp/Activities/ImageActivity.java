@@ -1,6 +1,7 @@
 package com.example.blogapp.Activities;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -11,6 +12,7 @@ import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 
 import android.view.Gravity;
@@ -30,6 +32,7 @@ import androidx.fragment.app.FragmentTransaction;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
+import com.example.blogapp.Adapters.PostAdapter;
 import com.example.blogapp.Fragments.ImagesFragment;
 import com.example.blogapp.Fragments.MainFragment;
 import com.example.blogapp.Models.Post;
@@ -55,6 +58,8 @@ import android.os.Bundle;
 
 import com.example.blogapp.R;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -71,6 +76,7 @@ public class ImageActivity extends AppCompatActivity {
     ProgressBar popupClickProgress;
     private Uri pickedImgUri = null;
     String courtId = "court";
+    String key_value;
 
     FragmentManager fragmentManager;
     FragmentTransaction fragmentTransaction;
@@ -86,7 +92,6 @@ public class ImageActivity extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
         currentUser = mAuth.getCurrentUser();
         mFunctions = FirebaseFunctions.getInstance();
-
 
         // ini popup
         iniPopup();
@@ -199,9 +204,12 @@ public class ImageActivity extends AppCompatActivity {
                         public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
 
                             imageFilePath.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                                @RequiresApi(api = Build.VERSION_CODES.O)
                                 @Override
                                 public void onSuccess(Uri uri) {
                                     String imageDownlaodLink = uri.toString();
+
+                                    String date = day_function();
                                     // create post Object
 
                                     if(currentUser.getPhotoUrl() != null){
@@ -209,8 +217,10 @@ public class ImageActivity extends AppCompatActivity {
                                         Post post = new Post(popupTitle.getText().toString(),
                                                 popupDescription.getText().toString(),
                                                 imageDownlaodLink,
+                                                currentUser.getDisplayName(),
                                                 currentUser.getUid(),
-                                                currentUser.getPhotoUrl().toString());
+                                                currentUser.getPhotoUrl().toString(),
+                                                date);
 
                                         // Add post to firebase database
                                         onAddCourtImage(post);
@@ -220,8 +230,10 @@ public class ImageActivity extends AppCompatActivity {
                                         Post post = new Post(popupTitle.getText().toString(),
                                                 popupDescription.getText().toString(),
                                                 imageDownlaodLink,
+                                                currentUser.getDisplayName(),
                                                 currentUser.getUid(),
-                                                null);
+                                                null,
+                                                date);
 
                                         // Add post to firebase database
                                         onAddCourtImage(post);
@@ -274,8 +286,10 @@ public class ImageActivity extends AppCompatActivity {
         images.put("description", post.getDescription());
         images.put("picture", post.getPicture());
         images.put("title", post.getTitle());
+        images.put("username", post.getUsername());
         images.put("userId", post.getUserId());
         images.put("userPhoto", post.getUserPhoto());
+        images.put("day", post.getDay());
         images.put("timestamp", post.getTimeStamp());
         images.put("courtId", courtId);
 
@@ -294,7 +308,7 @@ public class ImageActivity extends AppCompatActivity {
                 });
     }
 
-    private void onAddCourtImage(final Post post) {
+    private void onAddCourtImage(Post post) {
 
         // [START call_add_message]
         addCourtImage(post).addOnCompleteListener(new OnCompleteListener<String>() {
@@ -314,8 +328,8 @@ public class ImageActivity extends AppCompatActivity {
                     return;
                     // [END_EXCLUDE]
                 }
-                String key_value = task.getResult();
-                post.setPostKey(key_value);
+                key_value = task.getResult();
+
                 Toast.makeText(ImageActivity.this, "Post: '" + key_value + "' added", Toast.LENGTH_SHORT).show();
                 popupClickProgress.setVisibility(View.INVISIBLE);
                 popupAddBtn.setVisibility(View.VISIBLE);
@@ -337,6 +351,14 @@ public class ImageActivity extends AppCompatActivity {
         } else {
             super.onBackPressed();
         }
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    public String day_function(){
+
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
+        LocalDateTime now = LocalDateTime.now();
+        return dtf.format(now);
     }
 
     //TO DELETE
@@ -375,7 +397,7 @@ public class ImageActivity extends AppCompatActivity {
 
         // get post unique ID and update post key
         String key = myRef.getKey();
-        post.setPostKey(key);
+        //post.setPostKey(key);
 
         // add post data to firebase database
         myRef.child("Court_images").child(courtId).setValue(post).addOnSuccessListener(new OnSuccessListener<Void>() {

@@ -219,7 +219,7 @@ public class RegisterActivity extends AppCompatActivity {
 
     private void openGallery() {
 
-        Intent galleryIntent = new Intent(Intent.ACTION_GET_CONTENT);
+        Intent galleryIntent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
         galleryIntent.setType("image/*");
         startActivityForResult(galleryIntent, REQUESTCODE);
     }
