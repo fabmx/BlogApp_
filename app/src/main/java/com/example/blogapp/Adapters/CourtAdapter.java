@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.CenterCrop;
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
+import com.example.blogapp.Activities.ChatActivity;
 import com.example.blogapp.Activities.ImageActivity;
 import com.example.blogapp.Models.Court;
 import com.example.blogapp.R;
@@ -61,6 +62,15 @@ public class CourtAdapter extends RecyclerView.Adapter<CourtAdapter.courtviewhol
                 mContext.startActivity(imgActivity);
             }
         });
+
+        holder.chat.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent chatActivity = new Intent(mContext.getApplicationContext(), ChatActivity.class);
+                chatActivity.putExtra("courtId", court.getStreet());
+                mContext.startActivity(chatActivity);
+            }
+        });
     }
 
     @Override
@@ -70,7 +80,7 @@ public class CourtAdapter extends RecyclerView.Adapter<CourtAdapter.courtviewhol
 
     public class courtviewholder extends RecyclerView.ViewHolder {
 
-        ImageView imgCourt, addImg;
+        ImageView imgCourt, addImg, chat;
         TextView street;
         RatingBar ratingBar;
 
@@ -81,6 +91,7 @@ public class CourtAdapter extends RecyclerView.Adapter<CourtAdapter.courtviewhol
             street = itemView.findViewById(R.id.item_pg_street);
             ratingBar = itemView.findViewById(R.id.ratingBar);
             addImg = itemView.findViewById(R.id.add_image);
+            chat = itemView.findViewById(R.id.chat);
         }
     }
 }
