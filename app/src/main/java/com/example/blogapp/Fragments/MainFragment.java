@@ -157,13 +157,13 @@ public class MainFragment extends Fragment {
     private void initmDataCourts() {
 
         mData = new ArrayList<>();
-        mData.add(new Court("Villa Dora Pamphili", null, 4, R.mipmap.pamphili));
-        mData.add(new Court("Via Dei Buonvisi", null, 4, R.mipmap.via_dei_buonvisi));
-        mData.add(new Court("Parco del Colle Oppio", null, 4, R.mipmap.colosseo));
-        mData.add(new Court("Largo Cevasco", null, 4, R.mipmap.tor_3_teste2));
-        mData.add(new Court("Largo Passamonti", null, 4,R.mipmap.largo_settimio_passamonti));
-        mData.add(new Court("Via Martini", null, 4, R.mipmap.via_martini));
-        mData.add(new Court("Salita di San Gregorio", null, 4,R.mipmap.salita_san_gregorio));
-        mData.add(new Court("Via Masia", null, 3, R.mipmap.via_masia));
+        mData.add(new Court("Villa Dora Pamphili", null, 4, R.mipmap.pamphili, 41.88798, 12.4329906));
+        mData.add(new Court("Via Dei Buonvisi", null, 4, R.mipmap.via_dei_buonvisi, 41.8523207, 12.4222515));
+        mData.add(new Court("Parco del Colle Oppio", null, 4, R.mipmap.colosseo, 41.8914268, 12.4937339));
+        mData.add(new Court("Largo Cevasco", null, 4, R.mipmap.tor_3_teste2, 41.8816002, 12.5823006));
+        mData.add(new Court("Largo Passamonti", null, 4,R.mipmap.largo_settimio_passamonti, 41.8882651, 12.4332069));
+        mData.add(new Court("Via Martini", null, 4, R.mipmap.via_martini, 41.8515119, 12.5869594));
+        mData.add(new Court("Salita di San Gregorio", null, 4,R.mipmap.salita_san_gregorio, 41.8844865, 12.4888822));
+        mData.add(new Court("Via Masia", null, 3, R.mipmap.via_masia, 41.8572773, 12.5774213));
     }
 }
